@@ -1,6 +1,9 @@
 /*
-I am uncertain about the stochastic component of the model. Specifically, I am unsure if each neighboring node has a unique random probability of being activated or if all nodes share the same random probability. I men if the random value is 0.7 then we need to compare it with p and generate another random value for each neighbour, or for that graph G the random value of 0.7 it will be the same for all the neighbours.I assume that the former is true and that the random value to compare it with p varies for each neighboring node. Additionally, I am uncertain if the graph must be connected for the model to function properly. I understand that even if the graph is not connected, the model will still operate in the same manner.
-
+I am uncertain about the stochastic component of the model. Specifically, I am unsure if each neighboring node has a unique random probability of being 
+activated or if all nodes share the same random probability. I men if the random value is 0.7 then we need to compare it with p and generate another 
+random value for each neighbour, or for that graph G the random value of 0.7 it will be the same for all the neighbours.I assume that the former is 
+true and that the random value to compare it with p varies for each neighboring node. Additionally, I am uncertain if the graph must be connected 
+for the model to function properly. I understand that even if the graph is not connected, the model will still operate in the same manner.
 */
 
 
