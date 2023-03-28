@@ -8,7 +8,7 @@ using namespace std;
 int main(){
     vector<vector<int> > G = { {1}, {0, 2}, {1, 3}, {2, 4, 5}, {3, 6}, {3, 7}, {4, 8}, {5, 9}, {6}, {7} };
     //double p = 0.8;
-    double r = 0.4;
+    double r = 0.6;
 
     /* PROCEDURE TESTING
     vector<int> S = {0, 7, 8};

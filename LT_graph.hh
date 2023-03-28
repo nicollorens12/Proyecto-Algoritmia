@@ -94,22 +94,34 @@ class LTGraph{
         }
         sort(degree.begin(),degree.end(), node_comparator);
         bool stop = false;
-        int e_degree = 1;
+        int e_degree = 0;
         vector<int> old_S;
         while(!stop){
+
             vector<int> aux;
-            for(int j = 0; j < V; ++j)if(degree[j].degree > e_degree) aux.push_back(degree[j].node);
+            for(int j = e_degree; j < V; ++j) {
+
+                aux.push_back(degree[j].node);
+
+                //cout << "SIZE DE AUX ES: " << aux.size() << endl;
+            }
+            //si aux es vacio ni intentar
             old_S = S;
             S = aux;
-            if(procedure() != V) stop = true;
+            int procedure_res = procedure();
+            //cout << "CON AUX SIZE DE: " << aux.size() <<
+            if(procedure_res != V) stop = true;
+            else ++e_degree;
+
         }
         cout << "MINIMUM INITIAL NODES: {";
         int old_S_size = old_S.size();
-        for(int k = 0; k < old_S_size; ++k) cout << old_S[k] << ", ";
+        for(int k = 0; k < old_S_size; ++k) {
+            if(k == old_S_size - 1) cout << old_S[k];
+            else cout << old_S[k] << ", ";
+        }
         cout << "}" << endl;
     }
-
-
 
 
 };
