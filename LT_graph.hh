@@ -4,6 +4,10 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <cstdlib>
+#include <ctime>
+#include <cmath>
+#include <random>
 
 using namespace std;
 
@@ -18,20 +22,20 @@ class LTGraph{
         vector<vector<int>> G;
         double r;
         vector<int> S;
+        vector<bool> active;
     public:
 
     LTGraph(vector<vector<int> > graph, vector<int> S_a, float r_a){
         G = graph;
         r = r_a;
         S = S_a;
+        active = vector<bool> (G.size(),false); //Not used
     }
 
     LTGraph(vector<vector<int> > graph, float r_a){
         G = graph;
         r = r_a;
-        int V = G.size();
-        S = vector<int> (V);
-        for(int i = 0; i < V; ++i) S[i] = i;
+        active = vector<bool> (G.size(),false);
     }
 
     int procedure(){
@@ -85,7 +89,10 @@ class LTGraph{
     }
 
     void greedy(){
+
         int V = G.size();
+        S = vector<int> (V);
+        for(int i = 0; i < V; ++i) S[i] = i;
         vector<node_info> degree(V);
 
         for(int i = 0; i < V; ++i) {
@@ -99,17 +106,12 @@ class LTGraph{
         while(!stop){
 
             vector<int> aux;
-            for(int j = e_degree; j < V; ++j) {
+            for(int j = e_degree; j < V; ++j) aux.push_back(degree[j].node);
 
-                aux.push_back(degree[j].node);
-
-                //cout << "SIZE DE AUX ES: " << aux.size() << endl;
-            }
             //si aux es vacio ni intentar
             old_S = S;
             S = aux;
             int procedure_res = procedure();
-            //cout << "CON AUX SIZE DE: " << aux.size() <<
             if(procedure_res != V) stop = true;
             else ++e_degree;
 
@@ -123,7 +125,113 @@ class LTGraph{
         cout << "}" << endl;
     }
 
+    int rand_node(){
+        int V = G.size();
+        random_device rd;
+        mt19937 gen(rd());
+        uniform_int_distribution<> distribucion(0, V - 1);
+        return distribucion(gen);
 
+    }
+
+    vector<int> random_set(){
+        vector<int> aux;
+
+        random_device rd;
+        mt19937 gen(rd());
+        uniform_real_distribution<double> dis(0.0, 1.0);
+        int V = G.size();
+        for (int i = 0; i < V; i++) {
+
+            double p = dis(gen);
+
+            if (p < r) {
+                aux.push_back(i);
+            }
+        }
+        return aux;
+    }
+
+    static int sol_score(vector<int> sol){ //Dar mejor puntuacion a una solucion de mismo tamaño pero nodos con mas grado
+       return sol.size();
+    }
+
+    vector<int> generate_neighbor(){ //Kill an active node
+        vector<int> sol = S;
+        int random_number = rand_node();
+        while(!active[random_number]){
+            random_number = rand_node();
+        }
+        active[random_number] = false;
+        int i = 0;
+        bool found = false;
+        int sol_size = sol.size();
+        while(i < sol_size and not found) if(sol[i] == random_number) sol.erase(sol.begin()+i);
+        return sol;
+    }
+
+    bool its_valid(vector<int> sol){
+        S = sol;
+        int V = G.size();
+        if( this->procedure() != V ) return false;
+        return true;
+    }
+
+    vector<int> add_active(vector<int>& set){
+        int random_number = rand_node();
+        while(active[random_number]){
+            random_number = rand_node();
+        }
+        active[random_number] = true;
+        set.push_back(random_number);
+        return set;
+    }
+
+    void local_search(){
+        int max_iterations = 1000;
+        double initial_temperature = 100.0;
+        double cooling_rate = 0.99;
+        vector<int> rand_set = random_set();
+        while(!its_valid(rand_set))
+            rand_set = add_active(rand_set);
+        S = rand_set;
+        int V = G.size();
+        int S_size = S.size();
+        for(int i = 0; i < S_size; ++i) active[S[i]] = true;
+        int quality = sol_score(S);
+        int iteration = 0;
+        double temperature = initial_temperature;
+
+        while(iteration < max_iterations and quality < V ){
+            vector<int> neighbor_S = generate_neighbor();
+            int neighbor_quality = sol_score(neighbor_S);
+
+            if (neighbor_quality > quality and its_valid(neighbor_S)) {
+                S = neighbor_S;
+                quality = neighbor_quality;
+            }
+            else {
+                double acceptance_probability = exp((neighbor_quality - quality) / temperature);
+                if (acceptance_probability > (double)rand() / RAND_MAX) {
+                    S = neighbor_S;
+                    quality = neighbor_quality;
+                }
+            }
+
+            temperature = temperature * cooling_rate;
+            iteration++;
+        }
+
+        cout << "-------------LOCAL SEARCH-------------" << endl;
+        cout << "MINIMUM INITIAL NODES: {";
+        S_size = S.size();
+        for(int k = 0; k < S_size; ++k) {
+            if(k == S_size- 1) cout << S[k];
+            else cout << S[k] << ", ";
+        }
+        cout << "}" << endl;
+
+    }
 };
 
 #endif
