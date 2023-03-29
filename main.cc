@@ -19,7 +19,8 @@ int main(){
     cout << "With an IC procedure there are " << IC.procedure() << " node(s) active(s) with a P of " << p << endl;
      */
     LTGraph LT(G,r);
-    //LT.greedy();
+    LT.greedy();
+    LT = LTGraph(G,r);
     LT.local_search();
 }
 

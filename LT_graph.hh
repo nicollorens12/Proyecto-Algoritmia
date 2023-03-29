@@ -116,6 +116,7 @@ class LTGraph{
             else ++e_degree;
 
         }
+        cout << "-------------GREEDY-------------" << endl;
         cout << "MINIMUM INITIAL NODES: {";
         int old_S_size = old_S.size();
         for(int k = 0; k < old_S_size; ++k) {
@@ -152,8 +153,10 @@ class LTGraph{
         return aux;
     }
 
-    static int sol_score(vector<int> sol){ //Dar mejor puntuacion a una solucion de mismo tamaño pero nodos con mas grado
-       return sol.size();
+    static int sol_score(vector<int> sol, int V){ //Implementacion provisional con nota en vez de solo size por si se decide añadir mas parametros al score
+      int sol_size = sol.size();
+      return (100/V) * (V - sol_size); //Cuanto menos nodos mas nota de 0 a 100
+
     }
 
     vector<int> generate_neighbor(){ //Kill an active node
@@ -177,6 +180,17 @@ class LTGraph{
         return true;
     }
 
+    bool more_degree(vector<int> neighbor){ //this function is only accessed when size is the same
+        int size = neighbor.size();
+        int s_counter = 0;
+        int neighbor_counter = 0;
+        for(int i = 0; i < size; ++i ){
+            neighbor_counter += G[neighbor[i]].size();
+            s_counter += G[S[i]].size();
+        }
+        return neighbor_counter > s_counter;
+    }
+
     vector<int> add_active(vector<int>& set){
         int random_number = rand_node();
         while(active[random_number]){
@@ -198,15 +212,15 @@ class LTGraph{
         int V = G.size();
         int S_size = S.size();
         for(int i = 0; i < S_size; ++i) active[S[i]] = true;
-        int quality = sol_score(S);
+        int quality = sol_score(S,V);
         int iteration = 0;
         double temperature = initial_temperature;
 
         while(iteration < max_iterations and quality < V ){
             vector<int> neighbor_S = generate_neighbor();
-            int neighbor_quality = sol_score(neighbor_S);
+            int neighbor_quality = sol_score(neighbor_S,V);
 
-            if (neighbor_quality > quality and its_valid(neighbor_S)) {
+            if ((neighbor_quality > quality or (neighbor_S.size() == S.size() and more_degree(neighbor_S))) and its_valid(neighbor_S)) { //when same quantity of active nodes, priorize the solution that affects more nodes
                 S = neighbor_S;
                 quality = neighbor_quality;
             }
