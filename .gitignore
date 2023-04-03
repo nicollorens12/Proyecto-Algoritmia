@@ -9,3 +9,4 @@ localSearchLT.o
 localSearchLT_exe
 metaheuristicIC.o
 metaheuristicIC_exe
+.vscode/
