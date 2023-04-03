@@ -2,6 +2,8 @@
 #include <iostream>
 #include <algorithm>
 
+#include "difusioLT.h"
+
 using namespace std;
 
 struct node_info{
@@ -13,7 +15,8 @@ bool node_comparator(node_info n1, node_info n2){
     return n1.degree < n2.degree;
 }
 
-int procedure(vector<vector<int>> G, vector<int> S, double r){
+/*
+int simulate_LT(vector<vector<int>> G, vector<int> S, double r){
     // Initialize counter as number of active nodes
     int counter = S.size();
     int V = G.size();
@@ -59,6 +62,7 @@ int procedure(vector<vector<int>> G, vector<int> S, double r){
 
     return counter;
 }
+*/
 
 void greedy(vector<vector<int>> G,double r){
 
@@ -83,7 +87,7 @@ void greedy(vector<vector<int>> G,double r){
         //si aux es vacio ni intentar
         old_S = S;
         S = aux;
-        int procedure_res = procedure(G,S,r);
+        int procedure_res = simulate_LT(G,S,r);
         if(procedure_res != V) stop = true;
         else ++e_degree;
 

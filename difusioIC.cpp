@@ -2,6 +2,7 @@
 #include <vector>
 #include <queue>
 #include <cstdlib>
+#include "difusioIC.h"
 
 using namespace std;
 
@@ -14,7 +15,7 @@ using namespace std;
 
 // Prerequisites: a undirected graph G, a real number p between [0,1] and a subset, S, of the set of vertices of G
 // Post: the number of vertices that have been influenced(activated)
-int simulate_IC(vector<vector<int>>& G, double p, vector<int>& S) {
+int simulate_IC(const vector<vector<int>>& G,  vector<int>& S, double p) {
 	// We initialize the counter as the number of active nodes
 	int counter = S.size();
 	int vector_size = G.size();
@@ -46,21 +47,4 @@ int simulate_IC(vector<vector<int>>& G, double p, vector<int>& S) {
       }
   }
   return counter;
-}
-
-
-int main(int argc, char** argv) {
-  vector<vector<int>> G = { {1}, {0, 2}, {1, 3}, {2, 4, 5}, {3, 6}, {3, 7}, {4, 8}, {5, 9}, {6}, {7} };
-  double p = 0.5;
-  vector<int> S = {7, 0, 8};
-  
-  // Check if different argument for p is provided
-  if (argc > 1) {
-      p = atof(argv[1]);
-  }
-
-  int counter = simulate_IC(G, p, S);
-  
-  cout << "The number of nodes activated using IC with a probability p = " << p << " is: " << counter << endl;
-  
 }

@@ -4,55 +4,10 @@
 #include <ctime>
 #include <cmath>
 #include <random>
+#include "difusioLT.h"
 
 using namespace std;
 
-int procedure(vector<vector<int>> G, vector<int> S, double r){
-    // Initialize counter as number of active nodes
-    int counter = S.size();
-    int V = G.size();
-    vector<bool> active(V, false);
-
-    for (int node : S) {
-        active[node] = true;
-    }
-
-    // 2 conditions to end loop. Either:
-    // all nodes are activated
-    // no new nodes have been activated since the last pass
-    while (counter < V) {
-        // store number of active nodes:
-        int initial = counter;
-
-        for (int i=0; i<V; i++) {
-            // for all inactive nodes, check neighbor influence:
-            if (!active[i]) {
-                // threshold = r * degree
-                double threshold = r * G[i].size();
-
-                // add influence of each active neighbor:
-                int influence = 0;
-                for (int neighbor : G[i]) {
-                    if(active[neighbor]) {
-                        influence++;
-                    }
-                    // if influence surpasses threshold,
-                    if(influence >= threshold) {
-                        active[i] = true;
-                        counter++;
-                        break;
-                    }
-                }
-            }
-        }
-        // check to see if there were new activations:
-        if (counter == initial) {
-            break;
-        }
-    }
-
-    return counter;
-}
 
 int rand_node(int V){
 
@@ -104,7 +59,8 @@ vector<int> generate_neighbor(vector<int> sol,vector<bool>& active, int V){ //Ki
 bool its_valid(const vector<vector<int>> G, const vector<int> sol, double r){
 
     int V = G.size();
-    if( procedure(G,sol,r) != V ) return false;
+    vector<int> S(sol);
+    if( simulate_LT(G,S,r) != V ) return false;
     return true;
 }
 

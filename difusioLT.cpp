@@ -1,9 +1,11 @@
 #include <vector>
 #include <iostream>
 
+#include "difusioLT.h"
+
 using namespace std;
 
-int procedure(vector<vector<int>> G, vector<int> S, double r){
+int simulate_LT(const vector<vector<int>>& G, vector<int>& S, double r){
     // Initialize counter as number of active nodes
     int num_active_nodes = S.size();
     int n = G.size();
@@ -43,22 +45,3 @@ int procedure(vector<vector<int>> G, vector<int> S, double r){
 
 
 
-int main(int argc, char** argv){
-    vector<vector<int> > G = { 
-        {1}, {0, 2}, {1, 3}, {2, 4, 5}, {3, 6}, 
-        {3, 7}, {4, 8}, {5, 9}, {6}, {7} 
-    };
-    vector<int> S = {0, 7, 8};
-    double r = 0.6;
-
-    //check if different argument for r is provided
-    if (argc > 1) {
-        r = atof(argv[1]);
-    }
-
-
-    cout << "With an LT procedure there are " << procedure(G,S,r) 
-        << " node(s) active(s) with a R of " << r << " and a intial set of " 
-        << S.size() << " elements" << endl;
-
-}

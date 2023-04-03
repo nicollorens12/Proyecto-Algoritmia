@@ -3,34 +3,10 @@
 #include <random>
 #include <algorithm>
 #include <queue>
+#include "difusioIC.h"
 
 using namespace std;
 
-int simulate_IC(const vector<vector<int>>& G, double p, const vector<int>& S) {
-	int counter = S.size();
-	int vector_size = G.size();
-	vector<bool> active(vector_size, false);
-	queue<int> Q;
-	
-	for (int node : S) {
-		  active[node] = true;
-		  Q.push(node);
-	}
-	
-	while (!Q.empty()) {
-		  int node = Q.front();
-		  Q.pop();
-		  for (int neighbour : G[node]) {
-		  		double random_number = (double) rand() / RAND_MAX;
-		      if (!active[neighbour] && (p > random_number)) {
-		          active[neighbour] = true;
-		          Q.push(neighbour);
-		          ++counter;
-		      }
-		  }
-	}
-	return counter;
-}
 
 // Random solution, I think that here we could use the greedy approach to get a initial solution.
 vector<int> randomSolution(int n, int k) {
@@ -49,7 +25,7 @@ int fitness(const vector<vector<int>>& G, double p, const vector<int>& S, const 
     for (int i : solution) {
         active.push_back(i);
     }
-    int fitnes = S.size() - simulate_IC(G, p, active);
+    int fitnes = S.size() - simulate_IC(G, active, p);
     return fitnes;
 }
 
