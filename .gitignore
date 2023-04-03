@@ -1,0 +1,11 @@
+
+difusioIC.o
+difusioIC_exe
+difusioLT.o
+difusioLT_exe
+greedyLT.o
+greedyLT_exe
+localSearchLT.o
+localSearchLT_exe
+metaheuristicIC.o
+metaheuristicIC_exe

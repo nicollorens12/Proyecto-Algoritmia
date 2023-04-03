@@ -5,6 +5,13 @@
 
 using namespace std;
 
+/*  Graphs are represented as a vector of vectors of integers, 
+    where each vector of integers represents a node and the elements
+    of the vector are the neighbors of the node.
+
+    Graphs in the IC model are undirected, so if there is an edge between 
+    node u and node v, then v is a neighbor of u and u is a neighbor of v. */
+
 // Prerequisites: a undirected graph G, a real number p between [0,1] and a subset, S, of the set of vertices of G
 // Post: the number of vertices that have been influenced(activated)
 int simulate_IC(vector<vector<int>>& G, double p, vector<int>& S) {
@@ -42,14 +49,18 @@ int simulate_IC(vector<vector<int>>& G, double p, vector<int>& S) {
 }
 
 
-int main() {
+int main(int argc, char** argv) {
   vector<vector<int>> G = { {1}, {0, 2}, {1, 3}, {2, 4, 5}, {3, 6}, {3, 7}, {4, 8}, {5, 9}, {6}, {7} };
   double p = 0.5;
   vector<int> S = {7, 0, 8};
   
+  // Check if different argument for p is provided
+  if (argc > 1) {
+      p = atof(argv[1]);
+  }
+
   int counter = simulate_IC(G, p, S);
   
   cout << "The number of nodes activated using IC with a probability p = " << p << " is: " << counter << endl;
   
 }
-
