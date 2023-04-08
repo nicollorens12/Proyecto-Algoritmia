@@ -6,6 +6,8 @@
 #include <ctime>
 #include <cstdlib>
 #include "difusioLT.h"
+#include "metaheuristicLT.h"
+#include "graph.h"
 
 using namespace std;
 
@@ -27,7 +29,7 @@ int fitness(const vector<vector<int>>& G, const vector<int>& S, double r,  const
     for (int i : solution) {
         active.push_back(i);
     }
-    int fitnes = S.size() - simulate_LT(G, active, r, false);
+    int fitnes = G.size() - simulate_LT(G, active, r, false);
     return fitnes;
 }
 
@@ -98,7 +100,7 @@ vector<vector<int>> next_generation(const vector<vector<int>>& G, const vector<i
 
 
 
-pair<vector<int>, int> metaheuristicLT(const vector<vector<int>>& G, const vector<int>& S, int k, int max_generations, int population_size, double mutation_probability, int tournament_size, double r) {
+pair<vector<int>, int> metaheuristicLT(const vector<vector<int>>& G, const vector<int>& S, double r, int k, int max_generations, int population_size, double mutation_probability, int tournament_size) {
     vector<vector<int>> population(population_size);
     for (int i = 0; i < population_size; i++) {
         population[i] = random_solution(G.size(), k);

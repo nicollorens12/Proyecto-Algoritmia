@@ -3,7 +3,7 @@
 #include <queue>
 #include <cstdlib>
 #include "difusioIC.h"
-#include "graph_visualizer.h"
+#include "graph.h"
 
 using namespace std;
 
@@ -36,7 +36,7 @@ int simulate_IC(const vector<vector<int>>& G,  vector<int>& S, double p, bool vi
   //Visualize initial state
     int step = 0;
     if(visualize) {
-        outputGraphToDotFile(G, active_nodes, "LT_step_" + to_string(step) + ".dot");
+        visualizeGraph(G, active_nodes, "LT_step_" + to_string(step) + ".dot");
         step++;
     }
 
@@ -57,7 +57,7 @@ int simulate_IC(const vector<vector<int>>& G,  vector<int>& S, double p, bool vi
             }
         }
         if(visualize) {
-            outputGraphToDotFile(G, active_nodes, "LT_step_" + to_string(step) + ".dot");
+            visualizeGraph(G, active_nodes, "LT_step_" + to_string(step) + ".dot");
             step++;
         }
     }

@@ -2,7 +2,7 @@
 #include <iostream>
 
 #include "difusioLT.h"
-#include "graph_visualizer.h"
+#include "graph.h"
 
 using namespace std;
 
@@ -19,7 +19,7 @@ int simulate_LT(const vector<vector<int>>& G, vector<int>& S, double r, bool vis
 
     int step = 0;
     if(visualize) {
-            outputGraphToDotFile(G, active_nodes, "LT_step_" + to_string(step) + ".dot");
+            visualizeGraph(G, active_nodes, "LT_step_" + to_string(step) + ".dot");
             step++;
     }
     while(num_active_nodes < n) {
@@ -49,7 +49,7 @@ int simulate_LT(const vector<vector<int>>& G, vector<int>& S, double r, bool vis
         active_nodes = updated_active_nodes;
 
         if(visualize) {
-            outputGraphToDotFile(G, active_nodes, "LT_step_" + to_string(step) + ".dot");
+            visualizeGraph(G, active_nodes, "LT_step_" + to_string(step) + ".dot");
             step++;
         }
     }

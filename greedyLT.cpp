@@ -15,55 +15,6 @@ bool node_comparator(node_info n1, node_info n2){
     return n1.degree < n2.degree;
 }
 
-/*
-int simulate_LT(vector<vector<int>> G, vector<int> S, double r){
-    // Initialize counter as number of active nodes
-    int counter = S.size();
-    int V = G.size();
-    vector<bool> active(V, false);
-
-    for (int node : S) {
-        active[node] = true;
-    }
-
-    // 2 conditions to end loop. Either:
-    // all nodes are activated
-    // no new nodes have been activated since the last pass
-    while (counter < V) {
-        // store number of active nodes:
-        int initial = counter;
-
-        for (int i=0; i<V; i++) {
-            // for all inactive nodes, check neighbor influence:
-            if (!active[i]) {
-                // threshold = r * degree
-                double threshold = r * G[i].size();
-
-                // add influence of each active neighbor:
-                int influence = 0;
-                for (int neighbor : G[i]) {
-                    if(active[neighbor]) {
-                        influence++;
-                    }
-                    // if influence surpasses threshold,
-                    if(influence >= threshold) {
-                        active[i] = true;
-                        counter++;
-                        break;
-                    }
-                }
-            }
-        }
-        // check to see if there were new activations:
-        if (counter == initial) {
-            break;
-        }
-    }
-
-    return counter;
-}
-*/
-
 void greedy(vector<vector<int>> G,double r){
 
     int V = G.size();
@@ -87,7 +38,7 @@ void greedy(vector<vector<int>> G,double r){
         //si aux es vacio ni intentar
         old_S = S;
         S = aux;
-        int procedure_res = simulate_LT(G,S,r);
+        int procedure_res = simulate_LT(G,S,r,false);
         if(procedure_res != V) stop = true;
         else ++e_degree;
 

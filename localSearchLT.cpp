@@ -60,7 +60,7 @@ bool its_valid(const vector<vector<int>> G, const vector<int> sol, double r){
 
     int V = G.size();
     vector<int> S(sol);
-    if( simulate_LT(G,S,r) != V ) return false;
+    if( simulate_LT(G,S,r, false) != V ) return false;
     return true;
 }
 

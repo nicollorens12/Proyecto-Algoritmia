@@ -7,38 +7,10 @@
 #include <filesystem>
 #include "difusioIC.h"
 #include "difusioLT.h"
-#include "graph_visualizer.h"
+#include "graph.h"
 #include "metaheuristicLT.h"
 
 using namespace std;
-
-
-vector<vector<int>> generate_graph(int num_nodes, int num_edges) {
-    if (num_edges > (num_nodes * (num_nodes - 1)) / 2) {
-        throw runtime_error("Invalid input: too many edges for the given number of nodes.");
-    }
-    
-    vector<vector<int>> graph(num_nodes);
-    set<pair<int, int>> added_edges;
-
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<> node_dist(0, num_nodes - 1);
-
-    while (added_edges.size() < static_cast<size_t>(num_edges)) {
-        int node1 = node_dist(gen);
-        int node2 = node_dist(gen);
-
-        if (node1 != node2 && added_edges.find(make_pair(node1, node2)) == added_edges.end() &&
-            added_edges.find(make_pair(node2, node1)) == added_edges.end()) {
-            graph[node1].push_back(node2);
-            graph[node2].push_back(node1);
-            added_edges.insert(make_pair(node1, node2));
-        }
-    }
-
-    return graph;
-}
 
 
 
@@ -55,7 +27,6 @@ int main(int argc, char* argv[]) {
     double mutationProbability = 0.05;
     int tournamentSize = 5;
     int k = 3;
-    int maxGenerations = 100;
     double p_or_r = 0.5;
 
     //create the same instructions but for the variables above (Default values)
@@ -94,7 +65,7 @@ int main(int argc, char* argv[]) {
         size_subset = atoi(argv[5]);
     }
     if (argc > 6) {
-        max_generations = atoi(argv[6]);
+        maxGenerations = atoi(argv[6]);
     }
     if (argc > 7) {
         mutationProbability = atof(argv[7]);
@@ -132,10 +103,11 @@ int main(int argc, char* argv[]) {
     //outputGraphToDotFile(G, S, "debug_output/initial_graph.dot");
 
     // Run the chosen simulation
-    int num_activated_nodes;
+    int best_fitness;
+    vector<int> best_solution;
     if (algo_choice == 1) {
         cout << "Testing difusioIC with p = " << p_or_r << endl;
-        num_activated_nodes = simulate_IC(G, S, p_or_r, true);
+        best_fitness = simulate_IC(G, S, p_or_r, true);
     } else {
         cout << "Testing metaheuristicLT with the following paremters: " << endl;
         cout << "     max_generations: " << maxGenerations << endl;
@@ -143,10 +115,12 @@ int main(int argc, char* argv[]) {
         cout << "     tournamentSize: " << tournamentSize << endl;
         cout << "     k: " << k << endl;
         cout << "     maxGenerations: " << maxGenerations << endl;
-        num_activated_nodes = metaheuristicLT(G, S, k,  maxGenerations, populationSize, mutationProbability, tournamentSize, p_or_r);
+        auto result = metaheuristicLT(G, S, p_or_r, k,  maxGenerations, populationSize, mutationProbability, tournamentSize);
+        best_solution = result.first;
+        best_fitness= result.second;
     }
   
-    cout << "Number of activated nodes after simulation: " << num_activated_nodes << endl;
+    //cout << "Number of activated nodes after simulation: " << num_activated_nodes << endl;
     
     cout << endl << "Initial active nodes:";
     for (const int& node : S) {
