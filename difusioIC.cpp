@@ -16,7 +16,7 @@ using namespace std;
 
 // Prerequisites: a undirected graph G, a real number p between [0,1] and a subset, S, of the set of vertices of G
 // Post: the number of vertices that have been influenced(activated)
-int simulate_IC(const vector<vector<int>>& G,  vector<int>& S, double p, bool visualize) {
+int simulate_IC(const vector<vector<int>>& G,  vector<int>& S, double p) {
     // We initialize the counter as the number of active nodes
 	int counter = S.size();
 	int vector_size = G.size();
@@ -31,14 +31,6 @@ int simulate_IC(const vector<vector<int>>& G,  vector<int>& S, double p, bool vi
       active_nodes[node] = true;
       Q.push(node);
      }
-
-
-  //Visualize initial state
-    int step = 0;
-    if(visualize) {
-        visualizeGraph_difusion(G, active_nodes, "IC_step_" + to_string(step) + ".dot");
-        step++;
-    }
 
     /* Until the queue is empty, an attempt is made to activate each neighbor of the nodes 
     present in the queue. This process is performed only once; thus, if activation of a 
@@ -55,10 +47,6 @@ int simulate_IC(const vector<vector<int>>& G,  vector<int>& S, double p, bool vi
                 Q.push(neighbour);
                 ++counter;
             }
-        }
-        if(visualize) {
-            visualizeGraph_difusion(G, active_nodes, "LT_step_" + to_string(step) + ".dot");
-            step++;
         }
     }
     return counter;

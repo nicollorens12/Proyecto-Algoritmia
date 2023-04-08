@@ -58,7 +58,7 @@ int main(int argc, char* argv[]) {
 
     // Generate a sample graph
     vector<vector<int>> G = generate_graph(num_nodes, num_edges);
-
+    
     // Generate an initial subset of size size_subset of randomly active nodes (not two times the same node)
     vector<int> S;
     set<int> added_nodes;
@@ -73,23 +73,21 @@ int main(int argc, char* argv[]) {
     //clear debug output"
     system("rm -rf debug_output/*");
 
+    //visualize initial state
+    visualizeGraph(G, S, "initial_state");
+    cout << endl <<  "      Initial Graph visualization saved in debug_output/initial_state.png" << endl<<endl;
+
     // Run the chosen simulation
     int num_activated_nodes;
     if (choice == 1) {
-        cout << "Testing difusioIC with p = " << p_or_r << endl;
-        num_activated_nodes = simulate_IC(G, S, p_or_r, true);
+        cout << "   - Testing difusioIC with p = " << p_or_r << endl;
+        num_activated_nodes = simulate_IC(G, S, p_or_r);
     } else {
-        cout << "Testing difusioLT with r = " << p_or_r << endl;
-        num_activated_nodes = simulate_LT(G, S, p_or_r, true);
+        cout << "    - Testing difusioLT with r = " << p_or_r << endl;
+        num_activated_nodes = simulate_LT(G, S, p_or_r);
     }
   
-    cout << "Number of activated nodes after simulation: " << num_activated_nodes << endl;
-    
-    cout << endl << "Initial active nodes:";
-    for (const int& node : S) {
-        cout << node << " ";
-    }
-    cout << endl << "Check the visualization in debug_output" << endl;
+    cout << "    - Number of activated nodes after simulation: " << num_activated_nodes << endl << endl;
 
 
     return 0;

@@ -6,7 +6,7 @@
 
 using namespace std;
 
-int simulate_LT(const vector<vector<int>>& G, vector<int>& S, double r, bool visualize) {
+int simulate_LT(const vector<vector<int>>& G, vector<int>& S, double r) {
     // Initialize counter as number of active nodes
     int num_active_nodes = S.size();
     int n = G.size();
@@ -17,13 +17,7 @@ int simulate_LT(const vector<vector<int>>& G, vector<int>& S, double r, bool vis
     }
     vector<bool> updated_active_nodes = active_nodes;
 
-    int step = 0;
-    if(visualize) {
-            visualizeGraph_difusion(G, active_nodes, "LT_step_" + to_string(step) + ".dot");
-            step++;
-    }
     while(num_active_nodes < n) {
-
         //iterate over all nodes
         for(int i = 0; i<n; i++){
             if (active_nodes[i]) continue;
@@ -47,11 +41,6 @@ int simulate_LT(const vector<vector<int>>& G, vector<int>& S, double r, bool vis
         // check if any nodes were activated, and update active nodes
         if (active_nodes == updated_active_nodes) break;
         active_nodes = updated_active_nodes;
-
-        if(visualize) {
-            visualizeGraph_difusion(G, active_nodes, "LT_step_" + to_string(step) + ".dot");
-            step++;
-        }
     }
 
     return num_active_nodes;

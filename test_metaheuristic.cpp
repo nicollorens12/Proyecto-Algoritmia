@@ -101,7 +101,6 @@ int main(int argc, char* argv[]) {
     //outputGraphToDotFile(G, S, "debug_output/initial_graph.dot");
 
     // Run the chosen simulation
-    int best_fitness;
     vector<int> best_solution;
 
     if (algo_choice == 1) {

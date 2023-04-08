@@ -38,7 +38,7 @@ void greedy(vector<vector<int>> G,double r){
         //si aux es vacio ni intentar
         old_S = S;
         S = aux;
-        int procedure_res = simulate_LT(G,S,r,false);
+        int procedure_res = simulate_LT(G,S,r);
         if(procedure_res != V) stop = true;
         else ++e_degree;
 

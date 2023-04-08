@@ -34,7 +34,7 @@ int fitness(const vector<vector<int>>& G, const vector<int>& S, double r,  const
     for (int i : solution) {
         active.push_back(i);
     }
-    int fitnes = G.size() - simulate_LT(G, active, r, false);
+    int fitnes = G.size() - simulate_LT(G, active, r);
     return fitnes;
 }
 
