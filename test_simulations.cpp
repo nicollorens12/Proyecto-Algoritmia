@@ -2,26 +2,16 @@
 #include <cstdlib>
 #include <vector>
 #include <ctime>
+#include <set>
+#include <random>
+#include <filesystem>
+
 #include "difusioIC.h"
 #include "difusioLT.h"
+#include "graph.h"
 
 using namespace std;
 
-
-vector<vector<int>> generate_graph(int num_nodes, int num_edges) {
-    vector<vector<int>> graph(num_nodes);
-
-    for (int i = 0; i < num_edges; ++i) {
-        int u = rand() % num_nodes;
-        int v = rand() % num_nodes;
-
-        // Add edge between nodes u and v
-        graph[u].push_back(v);
-        graph[v].push_back(u);
-    }
-
-    return graph;
-}
 
 
 int main(int argc, char* argv[]) {
@@ -30,43 +20,75 @@ int main(int argc, char* argv[]) {
     // Default values
     int choice = 1;
     double p_or_r = 0.5;
+    int num_nodes = 10;
+    int num_edges = 15;
+    int size_subset = 2;
 
     // If no argument is passed, print usage instructions and exit
     if (argc == 1) {
-        cout << "Usage: " << argv[0] << " [1|2] [p|r]" << endl;
-        cout << "     1 (default): Test difusioIC with p as the probability of influence" << endl;
+        cout << endl <<"Usage: " << endl<< argv[0] << " [1|2] [p|r] [num_nodes] [num_edges] [size_subset]" << endl;
+        cout <<endl<< "     1 (default): Test difusioIC with p as the probability of influence" << endl;
         cout << "     2: Test difusioLT with r as the threshold ratio" << endl;
         cout << "     p|r: Optional value for p or r (default: 0.5)" << endl;
+        cout << "     num_nodes: Optional value for number of nodes (default: 10)" << endl;
+        cout << "     num_edges: Optional value for number of edges (default: 15)" << endl; 
+        cout << "     size_subset: Optional value for size of subset (default: 2)" << endl <<endl;
         return 0;
     }
 
     // Read command-line arguments
+    // adapt below to include arg for num_nodes and num_edges
+
     if (argc > 1) {
         choice = atoi(argv[1]);
     }
     if (argc > 2) {
         p_or_r = atof(argv[2]);
     }
+    if (argc > 3) {
+        num_nodes = atoi(argv[3]);
+    }
+    if (argc > 4) {
+        num_edges = atoi(argv[4]);
+    }
+    if (argc > 5) {
+        size_subset = atoi(argv[5]);
+    }
+
 
     // Generate a sample graph
-    int num_nodes = 10;
-    int num_edges = 15;
     vector<vector<int>> G = generate_graph(num_nodes, num_edges);
+    
+    // Generate an initial subset of size size_subset of randomly active nodes (not two times the same node)
+    vector<int> S;
+    set<int> added_nodes;
+    while (S.size() < static_cast<size_t>(size_subset)) {
+        int node = rand() % num_nodes;
+        if (added_nodes.find(node) == added_nodes.end()) {
+            S.push_back(node);
+            added_nodes.insert(node);
+        }
+    }
 
-    // Generate an initial set of active nodes
-    vector<int> S = {0, 1};
+    //clear debug output"
+    system("rm -rf debug_output/*");
+
+    //visualize initial state
+    visualizeGraph(G, S, "initial_state");
+    cout << endl <<  "      Initial Graph visualization saved in debug_output/initial_state.png" << endl<<endl;
 
     // Run the chosen simulation
     int num_activated_nodes;
     if (choice == 1) {
-        cout << "Testing difusioIC with p = " << p_or_r << endl;
+        cout << "   - Testing difusioIC with p = " << p_or_r << endl;
         num_activated_nodes = simulate_IC(G, S, p_or_r);
     } else {
-        cout << "Testing difusioLT with r = " << p_or_r << endl;
+        cout << "    - Testing difusioLT with r = " << p_or_r << endl;
         num_activated_nodes = simulate_LT(G, S, p_or_r);
     }
+  
+    cout << "    - Number of activated nodes after simulation: " << num_activated_nodes << endl << endl;
 
-    cout << "Number of activated nodes: " << num_activated_nodes << endl;
 
     return 0;
 }

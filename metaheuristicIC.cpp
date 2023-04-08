@@ -20,6 +20,7 @@ vector<int> randomSolution(int n, int k) {
 }
 
 // Evaluate the quality of the solution.
+
 int fitness(const vector<vector<int>>& G, double p, const vector<int>& solution) {
 	vector<int> active(G.size());
 	for (int i : solution) {
