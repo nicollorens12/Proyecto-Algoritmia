@@ -15,12 +15,17 @@ using namespace std;
 
 
 vector<int> random_solution(int n, int k) {
-    vector<int> solution(n);
-    for (int i = 0; i < n; i++) {
-        solution[i] = i;
+    //generates a random subGraph of size k from the graph G (of size n)
+    vector<int> solution(k);
+    set<int> used;
+    for (int i = 0; i < k; i++) {
+        int node = rand() % n;
+        while (used.count(node) > 0) {
+            node = rand() % n;
+        }
+        solution[i] = node;
+        used.insert(node);
     }
-    random_shuffle(solution.begin(), solution.end());
-    solution.resize(k);
     return solution;
 }
 
@@ -99,8 +104,7 @@ vector<vector<int>> next_generation(const vector<vector<int>>& G, const vector<i
 }
 
 
-
-pair<vector<int>, int> metaheuristicLT(const vector<vector<int>>& G, const vector<int>& S, double r, int k, int max_generations, int population_size, double mutation_probability, int tournament_size) {
+vector<int> metaheuristicLT(const vector<vector<int>>& G, const vector<int>& S, double r, int k, int max_generations, int population_size, double mutation_probability, int tournament_size) {
     vector<vector<int>> population(population_size);
     for (int i = 0; i < population_size; i++) {
         population[i] = random_solution(G.size(), k);
@@ -119,6 +123,5 @@ pair<vector<int>, int> metaheuristicLT(const vector<vector<int>>& G, const vecto
             best_solution = population[i];
         }
     }
-
-    return {best_solution, best_fitness};
+    return best_solution;
 }

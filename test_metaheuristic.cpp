@@ -5,10 +5,13 @@
 #include <set>
 #include <random>
 #include <filesystem>
-#include "difusioIC.h"
-#include "difusioLT.h"
-#include "graph.h"
+
 #include "metaheuristicLT.h"
+#include "metaheuristicIC.h"
+#include "graph.h"
+#include "difusioLT.h"
+#include "difusioIC.h"
+
 
 using namespace std;
 
@@ -21,27 +24,25 @@ int main(int argc, char* argv[]) {
     int algo_choice = 2;
     int num_nodes = 10;
     int num_edges = 15;
-    int size_subset = 2;
+    int k = 3;
     int maxGenerations = 100;
     int populationSize = 100;
     double mutationProbability = 0.05;
     int tournamentSize = 5;
-    int k = 3;
     double p_or_r = 0.5;
 
     //create the same instructions but for the variables above (Default values)
     if (argc == 1) {
-        cout << endl <<"Usage: " << endl<< argv[0] << " [1|2] [p|r] [num_nodes] [num_edges] [size_subset] [max_generations] [mutationProbability] [tournamentSize] [k] [maxGenerations]" << endl;
+        cout << endl <<"Usage: " << endl<< argv[0] << " [1|2] [p|r] [num_nodes] [num_edges] [k] [max_generations] [mutationProbability] [tournamentSize] [maxGenerations]" << endl;
         cout <<endl<< "     1 (default): Test metaheuristicIC" << endl;
         cout << "     2: Test metaheuristicLT" << endl;
         cout << "     p|r: Optional value for p or r (default: 0.5)" << endl;
         cout << "     num_nodes: Optional value for number of nodes (default: 10)" << endl;
         cout << "     num_edges: Optional value for number of edges (default: 15)" << endl;
-        cout << "     size_subset: Optional value for size of subset (default: 2)" << endl;
+        cout << "     k: Optional value for size of subset (default: 2)" << endl;
         cout << "     max_generations: Optional value for max generations (default: 100)" << endl;
         cout << "     mutationProbability: Optional value for mutation probability (default: 0.05)" << endl;
         cout << "     tournamentSize: Optional value for tournament size (default: 5)" << endl;
-        cout << "     k: Optional value for k (default: 3)" << endl;
         cout << "     maxGenerations: Optional value for max generations (default: 100)" << endl <<endl;
         return 0;
     }
@@ -62,7 +63,7 @@ int main(int argc, char* argv[]) {
         num_edges = atoi(argv[4]);
     }
     if (argc > 5) {
-        size_subset = atoi(argv[5]);
+        k = atoi(argv[5]);
     }
     if (argc > 6) {
         maxGenerations = atoi(argv[6]);
@@ -74,9 +75,6 @@ int main(int argc, char* argv[]) {
         tournamentSize = atoi(argv[8]);
     }
     if (argc > 9) {
-        k = atoi(argv[9]);
-    }
-    if (argc > 10) {
         maxGenerations = atoi(argv[10]);
     }
 
@@ -85,10 +83,10 @@ int main(int argc, char* argv[]) {
     // Generate a sample graph
     vector<vector<int>> G = generate_graph(num_nodes, num_edges);
 
-    // Generate an initial subset of size size_subset of randomly active nodes (not two times the same node)
+    // Generate an initial subset of size k of randomly active nodes (not two times the same node)
     vector<int> S;
     set<int> added_nodes;
-    while (S.size() < static_cast<size_t>(size_subset)) {
+    while (S.size() < static_cast<size_t>(k)) {
         int node = rand() % num_nodes;
         if (added_nodes.find(node) == added_nodes.end()) {
             S.push_back(node);
@@ -105,9 +103,19 @@ int main(int argc, char* argv[]) {
     // Run the chosen simulation
     int best_fitness;
     vector<int> best_solution;
+
     if (algo_choice == 1) {
-        cout << "Testing difusioIC with p = " << p_or_r << endl;
-        best_fitness = simulate_IC(G, S, p_or_r, true);
+       cout << "Testing metaheuristicLT with the following paremters: " << endl;
+        cout << "     max_generations: " << maxGenerations << endl;
+        cout << "     mutationProbability: " << mutationProbability << endl;
+        cout << "     tournamentSize: " << tournamentSize << endl;
+        cout << "     k: " << k << endl;
+        cout << "     maxGenerations: " << maxGenerations << endl;
+        cout << "     p_or_r: " << p_or_r << endl;
+        best_solution = metaheuristicLT(G, S, p_or_r, k,  maxGenerations, populationSize, mutationProbability, tournamentSize);
+        visualizeGraph(G, best_solution, "best_solution.dot");
+        cout << "See the best solution for the Graph G and S of size k = " << k << " in debug_output/best_solution.dot.png" << endl;
+
     } else {
         cout << "Testing metaheuristicLT with the following paremters: " << endl;
         cout << "     max_generations: " << maxGenerations << endl;
@@ -115,17 +123,14 @@ int main(int argc, char* argv[]) {
         cout << "     tournamentSize: " << tournamentSize << endl;
         cout << "     k: " << k << endl;
         cout << "     maxGenerations: " << maxGenerations << endl;
-        auto result = metaheuristicLT(G, S, p_or_r, k,  maxGenerations, populationSize, mutationProbability, tournamentSize);
-        best_solution = result.first;
-        best_fitness= result.second;
+        cout << "     p_or_r: " << p_or_r << endl;
+
+        best_solution = metaheuristicLT(G, S, p_or_r, k,  maxGenerations, populationSize, mutationProbability, tournamentSize);
+        visualizeGraph(G, best_solution, "best_solution.dot");
+
+        cout << "See the best solution for the Graph G and S of size k = " << k << " in debug_output/best_solution.dot.png" << endl;
     }
-  
-    //cout << "Number of activated nodes after simulation: " << num_activated_nodes << endl;
-    
-    cout << endl << "Initial active nodes:";
-    for (const int& node : S) {
-        cout << node << " ";
-    }
+
     //cout << endl << "Check the visualization in debug_output" << endl;
 
 

@@ -36,7 +36,7 @@ int simulate_IC(const vector<vector<int>>& G,  vector<int>& S, double p, bool vi
   //Visualize initial state
     int step = 0;
     if(visualize) {
-        visualizeGraph(G, active_nodes, "LT_step_" + to_string(step) + ".dot");
+        visualizeGraph_difusion(G, active_nodes, "IC_step_" + to_string(step) + ".dot");
         step++;
     }
 
@@ -57,7 +57,7 @@ int simulate_IC(const vector<vector<int>>& G,  vector<int>& S, double p, bool vi
             }
         }
         if(visualize) {
-            visualizeGraph(G, active_nodes, "LT_step_" + to_string(step) + ".dot");
+            visualizeGraph_difusion(G, active_nodes, "LT_step_" + to_string(step) + ".dot");
             step++;
         }
     }

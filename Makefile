@@ -23,7 +23,7 @@ metaheuristicIC_exe: metaheuristicIC.o difusioIC.o graph.o
 test_simulations_exe: test_simulations.o difusioIC.o difusioLT.o graph.o
 	$(CC) -g $^ -o $@ $(LFLAGS)
 
-test_metaheuristic_exe: test_metaheuristic.o metaheuristicIC.o metaheuristicLT.o difusioIC.o difusioLT.o graph.o
+test_metaheuristic_exe: test_metaheuristic.o metaheuristicLT.o difusioIC.o difusioLT.o graph.o
 	$(CC) -g $^ -o $@ $(LFLAGS)
 
 	
