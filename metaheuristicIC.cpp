@@ -25,7 +25,7 @@ int fitness(const vector<vector<int>>& G, double p, const vector<int>& S, const 
     for (int i : solution) {
         active.push_back(i);
     }
-    int fitnes = S.size() - simulate_IC(G, active, p);
+    int fitnes = G.size() - simulate_IC(G, active, p, false);
     return fitnes;
 }
 

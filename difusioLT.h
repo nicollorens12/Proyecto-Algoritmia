@@ -5,6 +5,6 @@
 #include <vector>
 using namespace std;
 
-int simulate_LT(const vector<vector<int>>& G, vector<int>& S, double r);
+int simulate_LT(const vector<vector<int>>& G, vector<int>& S, double r, bool visualize = false);
 
 #endif

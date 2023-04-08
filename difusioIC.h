@@ -5,6 +5,6 @@
 #include <vector>
 using namespace std;
 
-int simulate_IC(const vector<vector<int>>& G, vector<int>& S,  double p);
+int simulate_IC(const vector<vector<int>>& G, vector<int>& S,  double p, bool visualize = true);
 
 #endif
