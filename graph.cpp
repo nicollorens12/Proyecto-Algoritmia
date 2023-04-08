@@ -65,7 +65,7 @@ void visualizeGraph(const vector<vector<int>>& graph,const vector<int>& subset, 
         for (const int& neighbor : graph[i]) {
             // To avoid duplicate edges, only print edges where i < neighbor
             if (i < static_cast<size_t>(neighbor)) {
-                dot_file << "  " << i << " -- " << neighbor << ";" << endl;
+                dot_file << "  " << i+1 << " -- " << neighbor+1 << ";" << endl;
             }
         }
     }
