@@ -44,24 +44,24 @@ vector<int> greedy_LT(const vector<vector<int>>& G, double r){
         else ++e_degree;
 
     }
-    cout << "-------------LT GREEDY-------------" << endl;
-    cout << "MINIMUM INITIAL NODES: {";
-    int old_S_size = old_S.size();
-    for(int k = 0; k < old_S_size; ++k) {
-        if(k == old_S_size - 1) cout << old_S[k];
-        else cout << old_S[k] << ", ";
-    }
-    cout << "}" << endl;
-    cout << "With an R of: " << r << endl;
-        
-    cout << "SIZE " << old_S_size << endl; 
-    
     return old_S;
 }
 
 int main(int argc, char **argv){
     vector<vector<int>> G = read_Data(argc, argv);
     double r = 0.6;
+    vector<int> result = greedy_LT(G,r);
 
-    //greedy_LT(G,r);
+    cout << "-------------LT GREEDY-------------" << endl;
+    cout << "MINIMUM INITIAL NODES: {";
+    int result_size = result.size();
+    for(int k = 0; k < result_size; ++k) {
+        if(k == result_size - 1) cout << result[k];
+        else cout << result[k] << ", ";
+    }
+    cout << "}" << endl;
+    cout << "With an R of: " << r << endl;
+        
+    cout << "SIZE " << result_size << endl; 
+    
 }

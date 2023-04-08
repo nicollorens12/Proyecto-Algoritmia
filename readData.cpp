@@ -29,14 +29,14 @@ vector<vector<int>> read_Data(const int& argc, const char* const* argv) {
     int u, v;
 
     while (File >> e) {
-	      if (e == 'e') {
-	      	  // Read an edge (u, v)
-	          File >> u >> v; 
-	          // Add v to the adjacency list of u
-	          G[u-1].push_back(v-1); 
-	          // Add u to the adjacency list of v
-	          G[v-1].push_back(u-1); 
-	      }
+        if (e == 'e') {
+	          // Read an edge (u, v)
+            File >> u >> v; 
+            // Add v to the adjacency list of u
+            G[u-1].push_back(v-1); 
+            // Add u to the adjacency list of v
+            G[v-1].push_back(u-1); 
+        }
     }
 
     // Close the input file

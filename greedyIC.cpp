@@ -45,26 +45,24 @@ vector<int> greedy_IC(const vector<vector<int>>& G, double p){
         else ++e_degree;
 
     }
-    cout << "-------------IC GREEDY-------------" << endl;
-    cout << "MINIMUM INITIAL NODES: {";
-    int old_S_size = old_S.size();
-    for(int k = 0; k < old_S_size; ++k) {
-        if(k == old_S_size - 1) cout << old_S[k];
-        else cout << old_S[k] << ", ";
-    }
-    
-    //visualizeGraph(G, old_S, "best_solution.dot");
-    
-    cout << "}" << endl;
-    cout << "With a probability p of: " << p << endl;
-    cout << "SIZE: " << old_S_size << endl;
-    
     return old_S;
-    
 }
 
 int main(int argc, char **argv) {
     vector<vector<int> > G = read_Data(argc, argv);
     double p = 0.5;
-    //greedy_IC(G,p);
+    vector<int> result = greedy_IC(G,p);
+
+    cout << "-------------IC GREEDY-------------" << endl;
+    cout << "MINIMUM INITIAL NODES: {";
+    int result_size = result.size();
+    for(int k = 0; k < result_size; ++k) {
+        if(k == result_size - 1) cout << result[k];
+        else cout << result[k] << ", ";
+    }
+    
+    cout << "}" << endl;
+    cout << "With a probability p of: " << p << endl;
+    cout << "SIZE: " << result_size << endl;
+    
 }
