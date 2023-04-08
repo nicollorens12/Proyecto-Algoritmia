@@ -15,7 +15,7 @@ using namespace std;
 
 // Prerequisites: a undirected graph G, a real number p between [0,1] and a subset, S, of the set of vertices of G
 // Post: the number of vertices that have been influenced(activated)
-int simulate_IC(const vector<vector<int>>& G,  vector<int>& S, double p) {
+int simulate_IC(const vector<vector<int>>& G, const vector<int>& S, double p) {
 	// We initialize the counter as the number of active nodes
 	int counter = S.size();
 	int vector_size = G.size();
