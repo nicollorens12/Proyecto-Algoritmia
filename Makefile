@@ -2,7 +2,7 @@ CC = g++
 FLAGS = -g -c -Wall -std=c++11
 LFLAGS =
 
-SRCS = difusioLT.cpp difusioIC.cpp greedyLT.cpp greedyIC.cpp localSearchLT.cpp metaheuristicIC.cpp metaheuristicLT.cpp test_simulations.cpp readData.cpp graph.cpp
+SRCS = difusioLT.cpp difusioIC.cpp greedyLT.cpp greedyIC.cpp localSearchLT.cpp metaheuristicIC.cpp metaheuristicLT.cpp test_simulations.cpp readData.cpp graph.cpp test_benchmark.cpp
 OBJS = $(SRCS:.cpp=.o)
 EXES = greedyIC_exe greedyLT_exe localSearchLT_exe metaheuristicIC_exe metaheuristicLT_exe test_simulations_exe 
 
@@ -27,6 +27,9 @@ metaheuristicIC_exe: metaheuristicIC.o difusioIC.o readData.o
 	$(CC) -g $^ -o $@ $(LFLAGS)
 
 test_simulations_exe: test_simulations.o difusioIC.o difusioLT.o
+	$(CC) -g $^ -o $@ $(LFLAGS)
+
+test_benchmark_exe: test_benchmark.o difusioIC.o difusioLT.o readData.o graph.o greedyIC.o greedyLT.o localSearchLT.o metaheuristicIC.o metaheuristicLT.o
 	$(CC) -g $^ -o $@ $(LFLAGS)
 	
 clean:
