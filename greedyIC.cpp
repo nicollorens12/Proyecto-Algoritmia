@@ -2,8 +2,9 @@
 #include <iostream>
 #include <algorithm>
 
+#include "difusioIC.h"
 #include "readData.h"
-#include "difusioLT.h"
+#include "graph.h"
 
 using namespace std;
 
@@ -16,7 +17,7 @@ bool node_comparator(node_info n1, node_info n2){
     return n1.degree < n2.degree;
 }
 
-vector<int> greedy_LT(const vector<vector<int>>& G, double r){
+vector<int> greedy_IC(const vector<vector<int>>& G, double p){
 
     int V = G.size();
     vector<int> S = vector<int> (V);
@@ -39,29 +40,31 @@ vector<int> greedy_LT(const vector<vector<int>>& G, double r){
         //si aux es vacio ni intentar
         old_S = S;
         S = aux;
-        int procedure_res = simulate_LT(G,S,r);
+        int procedure_res = simulate_IC(G,S,p);
         if(procedure_res != V) stop = true;
         else ++e_degree;
 
     }
-    cout << "-------------LT GREEDY-------------" << endl;
+    cout << "-------------IC GREEDY-------------" << endl;
     cout << "MINIMUM INITIAL NODES: {";
     int old_S_size = old_S.size();
     for(int k = 0; k < old_S_size; ++k) {
         if(k == old_S_size - 1) cout << old_S[k];
         else cout << old_S[k] << ", ";
     }
+    
+    //visualizeGraph(G, old_S, "best_solution.dot");
+    
     cout << "}" << endl;
-    cout << "With an R of: " << r << endl;
-        
-    cout << "SIZE " << old_S_size << endl; 
+    cout << "With a probability p of: " << p << endl;
+    cout << "SIZE: " << old_S_size << endl;
     
     return old_S;
+    
 }
 
-int main(int argc, char **argv){
-    vector<vector<int>> G = read_Data(argc, argv);
-    double r = 0.6;
-
-    //greedy_LT(G,r);
+int main(int argc, char **argv) {
+    vector<vector<int> > G = read_Data(argc, argv);
+    double p = 0.5;
+    //greedy_IC(G,p);
 }
