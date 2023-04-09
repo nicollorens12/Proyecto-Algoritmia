@@ -1,6 +1,7 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <queue>
 
 #include "difusioIC.h"
 #include "readData.h"
@@ -8,44 +9,35 @@
 
 using namespace std;
 
-struct node_info{
-    int node;
-    int degree;
-};
-
-bool node_comparator(node_info n1, node_info n2){
-    return n1.degree < n2.degree;
-}
+// CELF based greedy
 
 vector<int> greedy_IC(const vector<vector<int>>& G, double p){
-
-    int V = G.size();
-    vector<int> S = vector<int> (V);
-    for(int i = 0; i < V; ++i) S[i] = i;
-    vector<node_info> degree(V);
-
-    for(int i = 0; i < V; ++i) {
-        degree[i].node = i;
-        degree[i].degree = G[i].size();
+    int graph_size = G.size();
+    vector<int> S;
+    // Nodes sorted by their marginal gain
+    priority_queue<pair<double, int>> Q;
+    // Compute the marginal gain for each node
+    for (int i = 0; i < graph_size; ++i) {
+        double marginal_gain = simulate_IC(G, {i}, p);
+        Q.push(make_pair(marginal_gain, i));
     }
-    sort(degree.begin(),degree.end(), node_comparator);
-    bool stop = false;
-    int e_degree = 0;
-    vector<int> old_S;
-    while(!stop){
-
-        vector<int> aux;
-        for(int j = e_degree; j < V; ++j) aux.push_back(degree[j].node);
-
-        //si aux es vacio ni intentar
-        old_S = S;
-        S = aux;
-        int procedure_res = simulate_IC(G,S,p);
-        if(procedure_res != V) stop = true;
-        else ++e_degree;
-
+    vector<int> last_update(graph_size, 0);
+    int influence = 0;
+    // Select the node with the highest marginal gain and add it to the set S
+    while (influence < graph_size) {
+        int node = Q.top().second;
+        int set_size = S.size();
+        Q.pop();
+        if (last_update[node] == set_size) {
+            S.push_back(node);
+            influence += Q.top().first;
+        } else {
+            double marginal_gain = simulate_IC(G, S, p) - influence;
+            last_update[node] = set_size;
+            Q.push(make_pair(marginal_gain, node));
+        }
     }
-    return old_S;
+    return S;
 }
 
 int main(int argc, char **argv) {

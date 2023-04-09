@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <set>
 #include <cstdlib>
 #include "difusioIC.h"
 #include "graph.h"
@@ -31,7 +32,7 @@ int simulate_IC(const vector<vector<int>>& G, const vector<int>& S, double p) {
   a vector of booleans called active, and we put in a queue the vectors that are active.*/
     for (int node : S) {
       active_nodes[node] = true;
-      Q.push(node);
+      Q.emplace(node);
      }
 
     /* Until the queue is empty, an attempt is made to activate each neighbor of the nodes 
@@ -46,7 +47,7 @@ int simulate_IC(const vector<vector<int>>& G, const vector<int>& S, double p) {
             and we compare it to the value of p to determine if the node can be activated.*/
             if (!active_nodes[neighbour] && (p > random_number)) {
                 active_nodes[neighbour] = true;
-                Q.push(neighbour);
+                Q.emplace(neighbour);
                 ++counter;
             }
         }
