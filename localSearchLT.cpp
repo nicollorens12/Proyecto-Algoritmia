@@ -56,7 +56,7 @@ vector<int> generate_neighbor(vector<int> sol,vector<bool>& active, int V){ //Ki
     return sol;
 }
 
-bool its_valid(const vector<vector<int>> G, const vector<int> sol, double r){
+bool its_valid(const vector<vector<int> > G, const vector<int> sol, double r){
 
     int V = G.size();
     vector<int> S(sol);
@@ -64,7 +64,7 @@ bool its_valid(const vector<vector<int>> G, const vector<int> sol, double r){
     return true;
 }
 
-bool more_degree(const vector<int>& S, const vector<int>& neighbor, const vector<vector<int>>& G){ //this function is only accessed when size is the same
+bool more_degree(const vector<int>& S, const vector<int>& neighbor, const vector<vector<int> >& G){ //this function is only accessed when size is the same
     int size = neighbor.size();
     int s_counter = 0;
     int neighbor_counter = 0;
@@ -85,7 +85,7 @@ vector<int> add_active(vector<int>& set,vector<bool> active, int V){
     return set;
 }
 
-void local_search(vector<vector<int>> G, double r){
+void local_searchLT(vector<vector<int> > G, double r){
     int max_iterations = 1000;
     double initial_temperature = 100.0;
     double cooling_rate = 0.99;
@@ -137,11 +137,3 @@ void local_search(vector<vector<int>> G, double r){
 
 }
 
-int main(){
-    vector<vector<int> > G = { {1}, {0, 2}, {1, 3}, {2, 4, 5}, {3, 6}, {3, 7}, {4, 8}, {5, 9}, {6}, {7} };
-    double r = 0.6;
-
-    local_search(G,r);
-
-
-}

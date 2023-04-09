@@ -2,36 +2,48 @@ CC = g++
 FLAGS = -g -c -Wall -std=c++11
 LFLAGS =
 
-SRCS = difusioLT.cpp difusioIC.cpp greedyLT.cpp greedyIC.cpp localSearchLT.cpp metaheuristicIC.cpp metaheuristicLT.cpp test_simulations.cpp readData.cpp graph.cpp test_benchmark.cpp
-OBJS = $(SRCS:.cpp=.o)
-EXES = greedyIC_exe greedyLT_exe localSearchLT_exe metaheuristicIC_exe metaheuristicLT_exe test_simulations_exe 
+SRCS = 	difusioLT.cpp \
+		difusioIC.cpp \
+		greedyLT.cpp \
+		greedyIC.cpp \
+		localSearchLT.cpp \
+		localSearchIC.cpp \
+		metaheuristicIC.cpp \
+		metaheuristicLT.cpp \
+		readData.cpp  \
+		graph.cpp \
+		test_simulations.cpp \
+		test_metaheuristic.cpp \
+		test_benchmark_all.cpp  
+
+OBJS = 	$(SRCS:.cpp=.o)
+
+EXES = 	test_simulations_exe\
+		test_metaheuristic_exe\
+		test_benchmark_exe
 
 all: $(EXES)
 
 %.o: %.cpp
 	$(CC) $(FLAGS) $< -o $@
 
-greedyIC_exe: greedyIC.o difusioIC.o readData.o graph.o
+test_simulations_exe:  difusioIC.o difusioLT.o test_simulations.o graph.o
+	$(CC) -g $^ -o $@ $(LFLAGS) 
+
+test_metaheuristic_exe: 	difusioIC.o difusioLT.o test_metaheuristic.o \
+							graph.o metaheuristicLT.o #metaheuristicIC.o
 	$(CC) -g $^ -o $@ $(LFLAGS)
 
-greedyLT_exe: greedyLT.o difusioLT.o readData.o
-	$(CC) -g $^ -o $@ $(LFLAGS)
-
-localSearchLT_exe: localSearchLT.o difusioLT.o
-	$(CC) -g $^ -o $@ $(LFLAGS)
-	
-metaheuristicLT_exe: metaheuristicLT.o difusioLT.o readData.o
-	$(CC) -g $^ -o $@ $(LFLAGS)	
-	
-metaheuristicIC_exe: metaheuristicIC.o difusioIC.o readData.o
-	$(CC) -g $^ -o $@ $(LFLAGS)
-
-test_simulations_exe: test_simulations.o difusioIC.o difusioLT.o
-	$(CC) -g $^ -o $@ $(LFLAGS)
-
-test_benchmark_exe: test_benchmark.o difusioIC.o difusioLT.o readData.o graph.o greedyIC.o greedyLT.o localSearchLT.o metaheuristicIC.o metaheuristicLT.o
-	$(CC) -g $^ -o $@ $(LFLAGS)
+test_benchmark_exe: 	test_benchmark_all.o \
+						difusioIC.o difusioLT.o \
+						greedyLT.cpp greedyIC.cpp \
+						localSearchLT.cpp localSearchIC.cpp \
+						metaheuristicIC.o metaheuristicLT.o \
+						readData.o graph.o \
+						
+	$(CC) -g $^ -o $@ $(LFLAGS) 
 	
 clean:
 	rm -f $(OBJS) $(EXES)
+	rm -r debug_output
 

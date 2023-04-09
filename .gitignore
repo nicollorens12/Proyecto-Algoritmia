@@ -10,3 +10,5 @@ localSearchLT_exe
 metaheuristicIC.o
 metaheuristicIC_exe
 .vscode/
+.DS_Store
+.DS_Store

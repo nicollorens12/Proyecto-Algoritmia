@@ -11,14 +11,16 @@ using namespace std;
 
 // CELF based greedy
 
-vector<int> greedy_IC(const vector<vector<int>>& G, double p){
+vector<int> greedy_IC(const vector<vector<int> >& G, double p){
     int graph_size = G.size();
     vector<int> S;
     // Nodes sorted by their marginal gain
-    priority_queue<pair<double, int>> Q;
+    priority_queue<pair<double, int> > Q;
     // Compute the marginal gain for each node
     for (int i = 0; i < graph_size; ++i) {
-        double marginal_gain = simulate_IC(G, {i}, p);
+        vector<int> S;
+        S.push_back(i);
+        double marginal_gain = simulate_IC(G,S, p);
         Q.push(make_pair(marginal_gain, i));
     }
     vector<int> last_update(graph_size, 0);
@@ -39,7 +41,7 @@ vector<int> greedy_IC(const vector<vector<int>>& G, double p){
     }
     return S;
 }
-
+/*
 int main(int argc, char **argv) {
     vector<vector<int> > G = read_Data(argc, argv);
     double p = 0.5;
@@ -58,3 +60,4 @@ int main(int argc, char **argv) {
     cout << "SIZE: " << result_size << endl;
     
 }
+*/

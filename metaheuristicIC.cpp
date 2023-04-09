@@ -157,6 +157,8 @@ vector<vector<int>> nextGeneration(const vector<vector<int>>& G, const vector<ve
   return newPopulation;
 }
 
+
+/*
 int main(int argc, char **argv) {
   // Number of solutions in a generation
   int populationSize = 100;
@@ -207,3 +209,4 @@ int main(int argc, char **argv) {
   cout << "Best fitness: " << bestFitness << endl;
 
 }
+*/

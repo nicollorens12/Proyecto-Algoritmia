@@ -12,11 +12,11 @@ struct node_info{
     int degree;
 };
 
-bool node_comparator(node_info n1, node_info n2){
+bool node_comparatorLT(node_info n1, node_info n2){
     return n1.degree < n2.degree;
 }
 
-vector<int> greedy_LT(const vector<vector<int>>& G, double r){
+vector<int> greedy_LT(const vector<vector<int> >& G, double r){
 
     int V = G.size();
     vector<int> S = vector<int> (V);
@@ -27,7 +27,7 @@ vector<int> greedy_LT(const vector<vector<int>>& G, double r){
         degree[i].node = i;
         degree[i].degree = G[i].size();
     }
-    sort(degree.begin(),degree.end(), node_comparator);
+    sort(degree.begin(),degree.end(), node_comparatorLT);
     bool stop = false;
     int e_degree = 0;
     vector<int> old_S;
@@ -47,8 +47,9 @@ vector<int> greedy_LT(const vector<vector<int>>& G, double r){
     return old_S;
 }
 
+/*
 int main(int argc, char **argv){
-    vector<vector<int>> G = read_Data(argc, argv);
+    vector<vector<int> > G = read_Data(argc, argv);
     double r = 0.6;
     vector<int> result = greedy_LT(G,r);
 
@@ -65,3 +66,5 @@ int main(int argc, char **argv){
     cout << "SIZE " << result_size << endl; 
     
 }
+
+*/

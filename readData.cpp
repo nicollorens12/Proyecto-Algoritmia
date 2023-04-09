@@ -1,9 +1,61 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <vector>
 #include <string>
 #include "readData.h"
 using namespace std;
+
+vector<vector<int>> generate_Graph_from_dimacs(string filename) {
+    char p, e;
+    string edge;    
+    int vertices, edges;
+
+    // Open the input file
+    ifstream File(filename);
+    if (!File) {
+        cerr << "Unable to open the file: " << filename << endl;
+        exit(1);
+    }
+
+    string line;
+    while (getline(File, line)) {
+        istringstream iss(line);
+        iss >> p;
+        if (p == 'p') {
+            iss >> edge >> vertices >> edges;
+
+            break;
+        }
+    }
+
+    vector<vector<int>> G(vertices); 
+    cout << "vertices: " << vertices << endl;
+    cout << "edges: " << edges << endl;
+
+    int u, v;
+
+    while (getline(File, line)) {
+        istringstream iss(line);
+        if (!(iss >> e)) { // Check if the line is empty or contains unexpected characters
+            continue;
+        }
+
+        if (e == 'e') {
+            // Read an edge (u, v)
+            iss >> u >> v; 
+            // Add v to the adjacency list of u
+            G[u-1].push_back(v-1); 
+            // Add u to the adjacency list of v
+            G[v-1].push_back(u-1); 
+        }
+    }
+
+    // Close the input file
+    File.close(); 
+
+    return G;
+}
 
 vector<vector<int>> read_Data(const int& argc, const char* const* argv) {
   if (argc < 2) {
@@ -42,15 +94,5 @@ vector<vector<int>> read_Data(const int& argc, const char* const* argv) {
   // Close the input file
   File.close(); 
 
-  /*
-  // Print the Graph
-  for (int u = 0; u < vertices; u++) {
-      cout << u+1 << ": ";
-      for (int v : G[u]) {
-          cout << v+1 << " ";
-      }
-      cout << endl;
-  }
-  */
   return G;
 }
