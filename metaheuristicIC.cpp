@@ -158,19 +158,15 @@ vector<vector<int>> nextGeneration(const vector<vector<int>>& G, const vector<ve
 }
 
 
-/*
-int main(int argc, char **argv) {
+vector<int> metaheuristicIC(const vector<vector<int>>& graph, double p) {
   // Number of solutions in a generation
   int populationSize = 100;
   double mutationProbability = 0.05;
   int maxGenerations = 100;
   int tournamentSize = 5;
 
-  vector<vector<int>> G = read_Data(argc, argv);
-  int graph_size = G.size();
+  int graph_size = graph.size();
 
-  double p = 0.5;
-  
   auto start = std::chrono::high_resolution_clock::now();
 
   vector<vector<int>> population;
@@ -179,34 +175,29 @@ int main(int argc, char **argv) {
 
   // Get generations
   for (int i = 0; i < maxGenerations; i++) {
-		  population = nextGeneration(G, population, mutationProbability, tournamentSize, p);
+      population = nextGeneration(graph, population, mutationProbability, tournamentSize, p);
   }
 
   // Get the best solution
   vector<int> bestSolution = population[0];
-  int bestFitness = fitness(G, p, bestSolution);
+  int bestFitness = fitness(graph, p, bestSolution);
   for (int i = 1; i < populationSize; i++) {
-		  float currentFitness = fitness(G, p, population[i]);
-		  if (currentFitness < bestFitness) {
-		      bestSolution = population[i];
-		      bestFitness = currentFitness;
-		  }
+      float currentFitness = fitness(graph, p, population[i]);
+      if (currentFitness < bestFitness) {
+          bestSolution = population[i];
+          bestFitness = currentFitness;
+      }
   }
-  
-  auto end = std::chrono::high_resolution_clock::now();
-  
-  auto elapsed_time = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-  
-  cout << "Execution time: " << elapsed_time.count() << " ms" << std::endl;
 
-  cout << "Best solution: {";
+  auto end = std::chrono::high_resolution_clock::now();
+
+  auto elapsed_time = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+
   int bestSolution_size = bestSolution.size();
   for (int i = 0; i < bestSolution_size; ++i) {
       if(i == bestSolution_size - 1) cout << bestSolution[i] + 1;
       else cout << bestSolution[i] + 1 << ", ";
   }
-  cout << "}" << endl;
-  cout << "Best fitness: " << bestFitness << endl;
 
+  return bestSolution;
 }
-*/

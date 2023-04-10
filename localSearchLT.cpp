@@ -42,6 +42,7 @@ int sol_score(vector<int> sol, int V){ //Implementacion provisional con nota en 
 
 }
 
+/*
 vector<int> generate_neighbor(vector<int> sol,vector<bool>& active, int V){ //Kill an active node
 
     int random_number = rand_node(V);
@@ -53,6 +54,36 @@ vector<int> generate_neighbor(vector<int> sol,vector<bool>& active, int V){ //Ki
     bool found = false;
     int sol_size = sol.size();
     while(i < sol_size and not found) if(sol[i] == random_number) sol.erase(sol.begin()+i);
+    return sol;
+}
+*/
+
+vector<int> generate_neighbor(vector<int> sol, vector<bool>& active, int V) { //Kill an active node
+    vector<int> active_indices;
+    for (int i = 0; i < V; ++i) {
+        if (active[i]) {
+            active_indices.push_back(i);
+        }
+    }
+
+    random_device rd;
+    mt19937 gen(rd());
+    shuffle(active_indices.begin(), active_indices.end(), gen);
+
+    int random_number = active_indices[0];
+    active[random_number] = false;
+
+    int i = 0;
+    bool found = false;
+    int sol_size = sol.size();
+    while (i < sol_size and not found) {
+        if (sol[i] == random_number) {
+            sol.erase(sol.begin() + i);
+        } else {
+            ++i;
+        }
+    }
+
     return sol;
 }
 
@@ -75,6 +106,7 @@ bool more_degree(const vector<int>& S, const vector<int>& neighbor, const vector
     return neighbor_counter > s_counter;
 }
 
+/*
 vector<int> add_active(vector<int>& set,vector<bool> active, int V){
     int random_number = rand_node(V);
     while(active[random_number]){
@@ -84,8 +116,27 @@ vector<int> add_active(vector<int>& set,vector<bool> active, int V){
     set.push_back(random_number);
     return set;
 }
+*/
+vector<int> add_active(vector<int>& set, vector<bool> active, int V) {
+    vector<int> inactive_indices;
+    for (int i = 0; i < V; ++i) {
+        if (!active[i]) {
+            inactive_indices.push_back(i);
+        }
+    }
 
-void local_searchLT(vector<vector<int> > G, double r){
+    random_device rd;
+    mt19937 gen(rd());
+    shuffle(inactive_indices.begin(), inactive_indices.end(), gen);
+
+    int random_number = inactive_indices[0];
+    active[random_number] = true;
+    set.push_back(random_number);
+
+    return set;
+}
+
+vector<int> local_searchLT(vector<vector<int> > G, double r){
     int max_iterations = 1000;
     double initial_temperature = 100.0;
     double cooling_rate = 0.99;
@@ -125,15 +176,7 @@ void local_searchLT(vector<vector<int> > G, double r){
         iteration++;
     }
 
-    cout << "-------------LOCAL SEARCH-------------" << endl;
-    cout << "MINIMUM INITIAL NODES: {";
-    S_size = S.size();
-    for(int k = 0; k < S_size; ++k) {
-        if(k == S_size- 1) cout << S[k];
-        else cout << S[k] << ", ";
-    }
-    cout << "}" << endl;
-    cout << "With an R of: " << r << endl;
+    return S;
 
 }
 

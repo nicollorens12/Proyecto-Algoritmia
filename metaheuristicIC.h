@@ -7,7 +7,7 @@ using namespace std;
 
 
 
-vector<int> metaheuristicIC(const vector<vector<int>>& G, const vector<int>& S, double r, int k, int max_generations, int population_size, double mutation_probability, int tournament_size);
+vector<int> metaheuristicIC(const vector<vector<int>>& G, double p = 0.5);
 
 
 #endif

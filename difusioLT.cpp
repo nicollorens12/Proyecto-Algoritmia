@@ -6,7 +6,7 @@
 
 using namespace std;
 
-int simulate_LT(const vector<vector<int>>& G, vector<int>& S, double r) {
+int simulate_LT(const vector<vector<int>>& G,const vector<int>& S, double r) {
     // Initialize counter as number of active nodes
     int num_active_nodes = S.size();
     int n = G.size();

@@ -111,7 +111,7 @@ int main(int argc, char* argv[]) {
         cout << "     k: " << k << endl;
         cout << "     maxGenerations: " << maxGenerations << endl;
         cout << "     p_or_r: " << p_or_r << endl;
-        best_solution = metaheuristicLT(G, S, p_or_r, k,  maxGenerations, populationSize, mutationProbability, tournamentSize);
+        best_solution = metaheuristicLT(G, p_or_r);//S, p_or_r, k,  maxGenerations, populationSize, mutationProbability, tournamentSize);
         visualizeGraph(G, best_solution, "best_solution.dot");
         cout << "See the best solution for the Graph G and S of size k = " << k << " in debug_output/best_solution.dot.png" << endl;
 
@@ -124,7 +124,7 @@ int main(int argc, char* argv[]) {
         cout << "     maxGenerations: " << maxGenerations << endl;
         cout << "     p_or_r: " << p_or_r << endl;
 
-        best_solution = metaheuristicLT(G, S, p_or_r, k,  maxGenerations, populationSize, mutationProbability, tournamentSize);
+        best_solution = metaheuristicLT(G,p_or_r);// S, p_or_r, k,  maxGenerations, populationSize, mutationProbability, tournamentSize);
         visualizeGraph(G, best_solution, "best_solution.dot");
 
         cout << "See the best solution for the Graph G and S of size k = " << k << " in debug_output/best_solution.dot.png" << endl;

@@ -45,5 +45,6 @@ test_benchmark_exe: 	test_benchmark_all.o \
 	
 clean:
 	rm -f $(OBJS) $(EXES)
-	rm -r debug_output
+	if [ -d debug_output ]; then rm -r debug_output; fi
+	if [ -d test_benchmark_exe.dSYM ]; then rm -r test_benchmark_exe.dSYM; fi
 

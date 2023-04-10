@@ -11,11 +11,8 @@
 
 using namespace std;
 
-
-
-
-vector<int> random_solution(int n, int k) {
-    //generates a random subGraph of size k from the graph G (of size n)
+vector<int> random_solutionLT(int n) {
+    int k = rand() % (n / 2) + 1;
     vector<int> solution(k);
     set<int> used;
     for (int i = 0; i < k; i++) {
@@ -29,17 +26,12 @@ vector<int> random_solution(int n, int k) {
     return solution;
 }
 
-int fitness(const vector<vector<int>>& G, const vector<int>& S, double r,  const vector<int>& solution) {
-    vector<int> active(S);
-    for (int i : solution) {
-        active.push_back(i);
-    }
-    int fitnes = G.size() - simulate_LT(G, active, r);
+int fitnessLT(const vector<vector<int>>& G, double r, const vector<int>& solution) {
+    int fitnes = G.size() - simulate_LT(G, solution, r);
     return fitnes;
 }
 
-
-vector<int> tournament(const vector<vector<int>>& population, const vector<int>& fitnesses, int tournament_size) {
+vector<int> tournamentLT(const vector<vector<int>>& population, const vector<int>& fitnesses, int tournament_size) {
     int population_size = population.size();
     vector<int> indices(tournament_size);
     for (int i = 0; i < tournament_size; i++) {
@@ -56,7 +48,7 @@ vector<int> tournament(const vector<vector<int>>& population, const vector<int>&
     return population[best_index];
 }
 
-vector<int> single_point_crossover(const vector<int>& parent1, const vector<int>& parent2) {
+vector<int> single_point_crossoverLT(const vector<int>& parent1, const vector<int>& parent2) {
     int n = parent1.size();
     int crossover_point = rand() % n;
     vector<int> child(n);
@@ -69,7 +61,7 @@ vector<int> single_point_crossover(const vector<int>& parent1, const vector<int>
     return child;
 }
 
-void mutate(vector<int>& solution, int n) {
+void mutateLT(vector<int>& solution, int n) {
     int index = rand() % solution.size();
     int new_node = rand() % n;
 
@@ -79,21 +71,22 @@ void mutate(vector<int>& solution, int n) {
     solution[index] = new_node;
 }
 
-vector<vector<int>> next_generation(const vector<vector<int>>& G, const vector<int>& S, double r,  vector<vector<int>>& population, double mutation_probability, int tournament_size) {
+vector<vector<int>> next_generationLT(const vector<vector<int>>& G, double r, vector<vector<int>>& population, double mutation_probability, int tournament_size) {
     vector<vector<int>> new_population;
     int population_size = population.size();
     vector<int> fitnesses(population_size);
     for (int i = 0; i < population_size; i++) {
-        fitnesses[i] = fitness(G, S, r, population[i]);
+        fitnesses[i] = fitnessLT(G, r, population[i]);
     }
 
     for (int i = 0; i < population_size; i++) {
-        vector<int> parent1 = tournament(population, fitnesses, tournament_size);
-        vector<int> parent2 = tournament(population, fitnesses, tournament_size);
+        vector<int> parent1 = tournamentLT(population, fitnesses, tournament_size);
+        vector<int> parent2 = tournamentLT(population, fitnesses, tournament_size);
 
-        vector<int> child = single_point_crossover(parent1, parent2);
-        if ((double) rand() / RAND_MAX < mutation_probability) {
-            mutate(child, G.size());
+        vector<int> child = single_point_crossoverLT
+    (parent1, parent2);
+        if ((double)rand() / RAND_MAX < mutation_probability) {
+            mutateLT(child, G.size());
         }
 
         new_population.push_back(child);
@@ -104,20 +97,27 @@ vector<vector<int>> next_generation(const vector<vector<int>>& G, const vector<i
 }
 
 
-vector<int> metaheuristicLT(const vector<vector<int>>& G, const vector<int>& S, double r, int k, int max_generations, int population_size, double mutation_probability, int tournament_size) {
+vector<int> metaheuristicLT(const vector<vector<int>>& G, double r) {
+    // Number of solutions in a generation
+    int population_size = 100;
+    double mutation_probability = 0.05;
+    int max_generations = 100;
+    int tournament_size = 5;
+
     vector<vector<int>> population(population_size);
     for (int i = 0; i < population_size; i++) {
-        population[i] = random_solution(G.size(), k);
+        population[i] = random_solutionLT
+    (G.size());
     }
 
     for (int i = 0; i < max_generations; i++) {
-        population = next_generation(G, S, r, population, mutation_probability, tournament_size);
+        population = next_generationLT(G, r, population, mutation_probability, tournament_size);
     }
 
-    int best_fitness = fitness(G, S, r, population[0]);
+    int best_fitness = fitnessLT(G, r, population[0]);
     vector<int> best_solution = population[0];
     for (int i = 1; i < population_size; i++) {
-        int current_fitness = fitness(G, S, r, population[i]);
+        int current_fitness = fitnessLT(G, r, population[i]);
         if (current_fitness> best_fitness) {
             best_fitness = current_fitness;
             best_solution = population[i];
