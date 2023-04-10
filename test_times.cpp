@@ -15,6 +15,8 @@
 #include "readData.h"
 
 using namespace std;
+
+/*
 int main(int argc, char* argv[]) {
     // List the first ten dimacs graph filenames
     vector<string> filenames = {
@@ -49,7 +51,7 @@ int main(int argc, char* argv[]) {
             vector<int> solution;
             try
             {
-                solution = algorithm.second(G, 0.5);   /* code */
+                solution = algorithm.second(G, 0.5);   // code 
             }
             catch(const std::exception& e)
             {
@@ -78,3 +80,6 @@ int main(int argc, char* argv[]) {
 
     return 0;
 }
+
+
+*/

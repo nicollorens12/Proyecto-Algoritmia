@@ -85,7 +85,6 @@ vector<int> tournament(const vector<vector<int>>& population, const vector<float
 
 // We select a candidate with equal probability from parent1 and parent2. Then we we iterate over the child and fix any duplicate 
 // nodes by replacing them with nodes that have not been selected.
-/*
 vector<int> uniformCrossover(const vector<int>& parent1, const vector<int>& parent2) {
 int n1 = parent1.size();
   int n2 = parent2.size();
@@ -133,47 +132,6 @@ int n1 = parent1.size();
   return child;
 }
 
-*/
-vector<int> uniformCrossover(const vector<int>& parent1, const vector<int>& parent2) {
-    int n1 = parent1.size();
-    int n2 = parent2.size();
-    int n = std::min(n1, n2);
-    std::vector<int> child(n);
-    std::unordered_set<int> selected;
-
-    for (int i = 0; i < n; i++) {
-        if (rand() % 2 == 0) {
-            child[i] = parent1[i];
-        } else {
-            child[i] = parent2[i];
-        }
-        selected.insert(child[i]);
-    }
-
-    std::unordered_set<int> remainingNodes;
-    for (int i = 0; i < n1; i++) {
-        if (selected.find(parent1[i]) == selected.end()) {
-            remainingNodes.insert(parent1[i]);
-        }
-    }
-    for (int i = 0; i < n2; i++) {
-        if (selected.find(parent2[i]) == selected.end()) {
-            remainingNodes.insert(parent2[i]);
-        }
-    }
-
-    for (int i = 0; i < n; i++) {
-        if (selected.count(child[i]) > 1) {
-            int nextNode = *remainingNodes.begin();
-            remainingNodes.erase(nextNode);
-            selected.erase(child[i]);
-            child[i] = nextNode;
-            selected.insert(nextNode);
-        }
-    }
-
-    return child;
-}
 
 
 vector<vector<int>> nextGeneration(const vector<vector<int>>& G, const vector<vector<int>>& population, const double& mutationProbability, const int& tournamentSize, const double& p) {
