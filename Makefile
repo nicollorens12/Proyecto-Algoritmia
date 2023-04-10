@@ -14,13 +14,15 @@ SRCS = 	difusioLT.cpp \
 		graph.cpp \
 		test_simulations.cpp \
 		test_metaheuristic.cpp \
-		test_benchmark_all.cpp  
+		test_benchmark_all.cpp  \
+		test_times.cpp
 
 OBJS = 	$(SRCS:.cpp=.o)
 
 EXES = 	test_simulations_exe\
 		test_metaheuristic_exe\
-		test_benchmark_exe
+		test_benchmark_exe \
+		test_times_exe
 
 all: $(EXES)
 
@@ -41,7 +43,16 @@ test_benchmark_exe: 	test_benchmark_all.o \
 						metaheuristicIC.o metaheuristicLT.o \
 						readData.o graph.o \
 						
-	$(CC) -g $^ -o $@ $(LFLAGS) 
+	$(CC) -g $^ -o $@ $(LFLAGS)
+
+test_times_exe: 	test_times.o \
+						difusioIC.o difusioLT.o \
+						greedyLT.cpp greedyIC.cpp \
+						localSearchLT.cpp localSearchIC.cpp \
+						metaheuristicIC.o metaheuristicLT.o \
+						readData.o graph.o \
+						
+	$(CC) -g $^ -o $@ $(LFLAGS)  
 	
 clean:
 	rm -f $(OBJS) $(EXES)

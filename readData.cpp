@@ -30,8 +30,8 @@ vector<vector<int>> generate_Graph_from_dimacs(string filename) {
     }
 
     vector<vector<int>> G(vertices); 
-    cout << "vertices: " << vertices << endl;
-    cout << "edges: " << edges << endl;
+    //cout << "vertices: " << vertices << endl;
+    //cout << "edges: " << edges << endl;
 
     int u, v;
 
