@@ -6,6 +6,7 @@
 #include <set>
 #include <ctime>
 #include <cstdlib>
+#include <chrono>
 #include "difusioLT.h"
 #include "metaheuristicLT.h"
 #include "graph.h"
