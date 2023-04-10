@@ -20,6 +20,7 @@ int rand_node(int V){
 
 vector<int> random_set(int V, double r){
     vector<int> aux;
+    aux.reserve(V);
 
     random_device rd;
     mt19937 gen(rd());
@@ -119,6 +120,7 @@ vector<int> add_active(vector<int>& set,vector<bool> active, int V){
 */
 vector<int> add_active(vector<int>& set, vector<bool> active, int V) {
     vector<int> inactive_indices;
+    set.reserve(V);
     for (int i = 0; i < V; ++i) {
         if (!active[i]) {
             inactive_indices.push_back(i);
