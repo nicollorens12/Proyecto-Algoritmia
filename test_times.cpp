@@ -2,6 +2,7 @@
 #include <iostream>
 #include <chrono>
 #include <fstream>
+#include <functional>
 #include "difusioLT.h"
 #include "difusioIC.h"
 #include "graph.h"
