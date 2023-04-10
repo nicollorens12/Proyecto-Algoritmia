@@ -6,6 +6,7 @@
 #include <random>
 #include <algorithm>
 #include "difusioLT.h"
+#include "greedyLT.h"
 
 using namespace std;
 
@@ -74,6 +75,8 @@ vector<int> local_searchLT(vector<vector<int> > G, double r) {
     double cooling_rate = 0.99;
     int V = G.size();
 
+    //vector<int> rand_set =
+    //vector<int> rand_set = greedy_LT(G,r);
     vector<int> rand_set = random_set(V, r);
     vector<bool> active(V, false);
 
