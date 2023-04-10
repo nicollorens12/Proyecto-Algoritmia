@@ -1,6 +1,7 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <chrono>
 
 #include "readData.h"
 #include "difusioLT.h"
@@ -50,14 +51,20 @@ vector<int> greedy_LT(const vector<vector<int>>& G, double r){
 int main(int argc, char **argv){
     vector<vector<int>> G = read_Data(argc, argv);
     double r = 0.6;
+    auto start = std::chrono::high_resolution_clock::now();
     vector<int> result = greedy_LT(G,r);
+    auto end = std::chrono::high_resolution_clock::now();
+  
+    auto elapsed_time = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    
+    cout << "Execution time: " << elapsed_time.count() << " ms" << std::endl;
 
     cout << "-------------LT GREEDY-------------" << endl;
     cout << "MINIMUM INITIAL NODES: {";
     int result_size = result.size();
     for(int k = 0; k < result_size; ++k) {
-        if(k == result_size - 1) cout << result[k];
-        else cout << result[k] << ", ";
+        if(k == result_size - 1) cout << result[k]+1;
+        else cout << result[k]+1 << ", ";
     }
     cout << "}" << endl;
     cout << "With an R of: " << r << endl;

@@ -54,4 +54,3 @@ int simulate_IC(const vector<vector<int>>& G, const vector<int>& S, double p) {
     }
     return counter;
 }
-
