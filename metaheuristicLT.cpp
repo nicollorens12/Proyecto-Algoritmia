@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <random>
 #include <queue>
 #include <set>
 #include <ctime>
@@ -10,6 +11,20 @@
 #include "graph.h"
 
 using namespace std;
+
+/*    int k = rand() % (n / 2) + 1;
+    vector<int> solution(k);
+    set<int> used;
+    for (int i = 0; i < k; i++) {
+        int node = rand() % n;
+        while (used.count(node) > 0) {
+            node = rand() % n;
+        }
+        solution[i] = node;
+        used.insert(node);
+    }
+    return solution;
+}*/
 
 vector<int> random_solutionLT(int n) {
     int k = rand() % (n / 2) + 1;
@@ -25,6 +40,9 @@ vector<int> random_solutionLT(int n) {
     }
     return solution;
 }
+
+
+
 
 int fitnessLT(const vector<vector<int>>& G, double r, const vector<int>& solution) {
     int fitnes = G.size() - simulate_LT(G, solution, r);
@@ -61,6 +79,7 @@ vector<int> single_point_crossoverLT(const vector<int>& parent1, const vector<in
     return child;
 }
 
+/*
 void mutateLT(vector<int>& solution, int n) {
     int index = rand() % solution.size();
     int new_node = rand() % n;
@@ -70,6 +89,28 @@ void mutateLT(vector<int>& solution, int n) {
     }
     solution[index] = new_node;
 }
+*/
+void mutateLT(vector<int>& solution, int n) {
+    int index = rand() % solution.size();
+
+    vector<int> available_nodes(n);
+    for (int i = 0; i < n; i++) {
+        available_nodes[i] = i;
+    }
+
+    // Use shuffle and a random number generator
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::default_random_engine rng(seed);
+    std::shuffle(available_nodes.begin(), available_nodes.end(), rng);
+
+    for (int new_node : available_nodes) {
+        if (find(solution.begin(), solution.end(), new_node) == solution.end()) {
+            solution[index] = new_node;
+            break;
+        }
+    }
+}
+
 
 vector<vector<int>> next_generationLT(const vector<vector<int>>& G, double r, vector<vector<int>>& population, double mutation_probability, int tournament_size) {
     vector<vector<int>> new_population;
@@ -125,3 +166,5 @@ vector<int> metaheuristicLT(const vector<vector<int>>& G, double r) {
     }
     return best_solution;
 }
+
+

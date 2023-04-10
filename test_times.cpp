@@ -18,9 +18,9 @@ int main(int argc, char* argv[]) {
     // List the first ten dimacs graph filenames
     vector<string> filenames = {
         "graph_dolphins.dimacs", "graph_karate.dimacs", "graph_football.dimacs",
-        "graph_jazz.dimacs", "socfb-nips-ego.dimacs", "socfb-Mich67.dimacs",
-        "socfb-Brandeis99.dimacs", "ego-facebook.dimacs", "graph_CA-GrQc.dimacs",
-        "graph_ncstrlwg2.dimacs"
+        "graph_jazz.dimacs", "socfb-nips-ego.dimacs", "socfb-Mich67.dimacs"//,
+        //"socfb-Brandeis99.dimacs", "ego-facebook.dimacs", "graph_CA-GrQc.dimacs",
+        //"graph_ncstrlwg2.dimacs"
     };
 
     // Create an output file to save the results
@@ -34,18 +34,29 @@ int main(int argc, char* argv[]) {
 
         // List the algorithms to run
         vector<pair<string, function<vector<int>(const vector<vector<int>>&, double)>> >algorithms = {
-            //{"greedyIC", greedy_IC},
-            //{"greedyLT", greedy_LT},
-            //{"localSearchIC", local_searchIC},
+            {"greedyIC", greedy_IC},
+            {"greedyLT", greedy_LT},
+            {"localSearchIC", local_searchIC},
             //{"localSearchLT", local_searchLT},
-            //{"metaheuristicIC", metaheuristicIC},
+            {"metaheuristicIC", metaheuristicIC},
             {"metaheuristicLT", metaheuristicLT},
         };
 
         for (const auto& algorithm : algorithms) {
             // Time the execution of the algorithm
             auto start = chrono::high_resolution_clock::now();
-            vector<int> solution = algorithm.second(G, 0.5);
+            vector<int> solution;
+            try
+            {
+                solution = algorithm.second(G, 0.5);   /* code */
+            }
+            catch(const std::exception& e)
+            {
+                solution = {};
+                cout << e.what() << endl;
+            }
+            
+            
             auto end = chrono::high_resolution_clock::now();
             chrono::duration<double, milli> execution_time = end - start;
 
