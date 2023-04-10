@@ -1,0 +1,88 @@
+com-dblp.ungraph.salida
+SIZE 
+Execution time:  ms
+
+deezer_HR.salida
+SIZE 96
+Execution time: 489589 ms
+
+ego-facebook.salida
+SIZE 2573
+Execution time: 274 ms
+
+gemsec_facebook_artist.salida
+SIZE 30
+Execution time: 397183 ms
+
+graph_actors_dat.salida
+SIZE 8921
+Execution time: 470 ms
+
+graph_CA-AstroPh.salida
+SIZE 18772
+Execution time: 3 ms
+
+graph_CA-CondMat.salida
+SIZE 23122
+Execution time: 10 ms
+
+graph_CA-GrQc.salida
+SIZE 5242
+Execution time: 0 ms
+
+graph_CA-HepPh.salida
+SIZE 12008
+Execution time: 2 ms
+
+graph_CA-HepTh.salida
+SIZE 9877
+Execution time: 1 ms
+
+graph_dolphins.salida
+SIZE 1
+Execution time: 0 ms
+
+graph_Email-Enron.salida
+SIZE 34676
+Execution time: 2063 ms
+
+graph_football.salida
+SIZE 4
+Execution time: 2 ms
+
+graph_jazz.salida
+SIZE 4
+Execution time: 8 ms
+
+graph_karate.salida
+SIZE 1
+Execution time: 0 ms
+
+graph_ncstrlwg2.salida
+SIZE 1758
+Execution time: 1630 ms
+
+loc-gowalla_edges.salida
+SIZE 69867
+Execution time: 2515799 ms
+
+musae_git.salida
+SIZE 2
+Execution time: 134188 ms
+
+socfb-Brandeis99.salida
+SIZE 3884
+Execution time: 1 ms
+
+socfb-Mich67.salida
+SIZE 3559
+Execution time: 18 ms
+
+socfb-nips-ego.salida
+SIZE 9
+Execution time: 277 ms
+
+soc-gplus.salida
+SIZE 1852
+Execution time: 21110 ms
+
