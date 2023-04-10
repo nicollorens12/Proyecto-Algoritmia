@@ -37,7 +37,7 @@ int main(int argc, char* argv[]) {
             {"greedyIC", greedy_IC},
             {"greedyLT", greedy_LT},
             {"localSearchIC", local_searchIC},
-            //{"localSearchLT", local_searchLT},
+            {"localSearchLT", local_searchLT},
             {"metaheuristicIC", metaheuristicIC},
             {"metaheuristicLT", metaheuristicLT},
         };
@@ -61,7 +61,12 @@ int main(int argc, char* argv[]) {
             chrono::duration<double, milli> execution_time = end - start;
 
             // Calculate the number of activated nodes
-            int activated_nodes = solution.size();
+            int activated_nodes;// = solution.size();
+            if (algorithm.first == "greedyIC" || algorithm.first == "localSearchIC" || algorithm.first == "metaheuristicIC") {
+                activated_nodes = simulate_IC(G, solution, 0.5);
+            } else if (algorithm.first == "greedyLT" || algorithm.first == "localSearchLT" || algorithm.first == "metaheuristicLT") {
+                activated_nodes = simulate_LT(G, solution, 0.5);
+            }
 
             // Save the results to the CSV file
             results_file << filename << "," << algorithm.first << "," << execution_time.count() << "," << solution.size() << "," << activated_nodes << endl;
